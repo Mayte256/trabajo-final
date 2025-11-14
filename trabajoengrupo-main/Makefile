@@ -1,4 +1,4 @@
-APP_NAME=manchas
+APP_NAME=mayte
 IMAGE=your-dockerhub-user/$(APP_NAME)
 
 build:
@@ -11,7 +11,7 @@ run:
 	docker run -p 8080:8080 $(IMAGE)
 
 stack-apply:
-	docker stack deploy -c stack.yml manchas
+	docker stack deploy -c stack.yml mayte
 
 stack-delete:
-	docker stack rm manchas
+	docker stack rm mayte
