@@ -17,7 +17,7 @@ services:
         - "traefik.http.routers.mayte-secure.tls=true"
         - "traefik.http.routers.mayte-secure.tls.certresolver=http"
         - "traefik.http.routers.mayte-secure.service=mayte"
-        - "traefik.http.services.mayte.loadbalancer.server.port=80"
+        - "traefik.http.services.mayte.loadbalancer.server.port=8080"
         - "traefik.docker.network=traefik-public"
     networks:
       - traefik-public
