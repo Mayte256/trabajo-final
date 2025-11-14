@@ -1,8 +1,11 @@
+# This workflow will install Python dependencies, run tests and lint with a single version of Python
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-python
+
 name: Python application
 
 on:
   push:
-    branches: [ "main" ]
+    branches: "final"
 
 permissions:
   contents: read
@@ -10,28 +13,47 @@ permissions:
 
 jobs:
   build:
+
     runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v4
-    
     - name: Set up Python 3.10
       uses: actions/setup-python@v3
       with:
         python-version: "3.10"
-    
-    
-    - name: Login to GitHub Container Registry
+    - name: Install dependencies
+      run: pip install -r requirements.txt
+
+    - name: 🔐 Login to GitHub Container Registry
       uses: docker/login-action@v3
       with:
         registry: ghcr.io
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
-    
-    - name: Build and push Docker image
+
+    - name: 🏗️ Build and push Docker image
       uses: docker/build-push-action@v6
       with:
-        context: ./trabajoengrupo-main
-        file: ./trabajoengrupo-main/Dockerfile 
         push: true
-        tags: ghcr.io/mayte256/trabajo-final:latest
+        tags: ghcr.io/byronmoreno/finalquintoc:3.0.0
+
+    - name: 🧾 Mostrar variables básicas (solo locales, no secretos)
+      run: |
+        echo "Probando conexión SSH con:"
+        echo "Host: ${{ secrets.VPS_HOST }}"
+        echo "Usuario: ${{ secrets.VPS_USER }}"
+        echo "Puerto: ${{ secrets.VPS_SSH_PORT }}"
+    
+    - name: 🧪 Probar conexión SSH
+      uses: appleboy/ssh-action@v1
+      with:
+        host: ${{ secrets.VPS_HOST }}
+        username: ${{ secrets.VPS_USER }}
+        password: ${{ secrets.VPS_PASSWORD }}
+        port: ${{ secrets.VPS_SSH_PORT }}
+        script: |
+          echo "✅ Conexión exitosa desde GitHub Actions"
+          hostname
+          whoami
+          uptime
