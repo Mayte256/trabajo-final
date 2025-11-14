@@ -1,0 +1,27 @@
+version: "3.8"
+
+services:
+  manchas:
+    image: manchas:latest
+    build: .
+    deploy:
+      replicas: 1
+      labels:
+        - "traefik.enable=true"
+        - "traefik.http.routers.manchas.entrypoints=http"
+        - "traefik.http.routers.manchas.rule=Host(`manchas.byronrm.com`)"
+        - "traefik.http.middlewares.manchas-https-redirect.redirectscheme.scheme=https"
+        - "traefik.http.routers.manchas.middlewares=manchas-https-redirect"
+        - "traefik.http.routers.manchas-secure.entrypoints=https"
+        - "traefik.http.routers.manchas-secure.rule=Host(`manchas.byronrm.com`)"
+        - "traefik.http.routers.manchas-secure.tls=true"
+        - "traefik.http.routers.manchas-secure.tls.certresolver=http"
+        - "traefik.http.routers.manchas-secure.service=manchas"
+        - "traefik.http.services.manchas.loadbalancer.server.port=80"
+        - "traefik.docker.network=traefik-public"
+    networks:
+      - traefik-public
+
+networks:
+  traefik-public:
+    external: true
