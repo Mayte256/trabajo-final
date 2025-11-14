@@ -34,4 +34,8 @@ jobs:
         context: ./trabajoengrupo-main
         file: ./trabajoengrupo-main/Dockerfile 
         push: true
+<<<<<<< HEAD
         tags: ghcr.io/mayte256/trabajo-final:latest
+=======
+        tags: ghcr.io/mayte256/trabajo-final:latest
+>>>>>>> 72935b5e3405c216674ad8be1e46f2668dca8885
