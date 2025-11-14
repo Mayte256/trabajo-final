@@ -31,6 +31,7 @@ jobs:
     - name: Build and push Docker image
       uses: docker/build-push-action@v6
       with:
-        context: .
+        context: ./trabajoengrupo-main
+        file: ./trabajoengrupo-main/Dockerfile 
         push: true
         tags: ghcr.io/mayte256/trabajo-final:latest
