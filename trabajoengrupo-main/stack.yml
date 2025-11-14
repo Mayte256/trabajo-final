@@ -2,7 +2,7 @@ version: "3.8"
 
 services:
   mayte:
-    image: mayte:latest
+    image: ghcr.io/mayte256/trabajo-final:latest
     build: .
     deploy:
       replicas: 1
