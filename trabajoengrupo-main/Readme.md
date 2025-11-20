@@ -1,6 +1,6 @@
 # Ejemplo Flask + Docker + Kubernetes
 
-Este proyecto contiene una aplicación web sencilla usando Flask, lista para ejecutarse en:holivvvi
+Este proyecto contiene una aplicación web muy sencilla usando Flask, lista para ejecutarse en:holivvvi
 
 - Docker
 - Kubernetes (Minikube o un cluster real)
