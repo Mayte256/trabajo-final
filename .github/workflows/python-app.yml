@@ -69,16 +69,6 @@ jobs:
         source: "trabajoengrupo-main/stack.yml"
         target: "/home/${{ secrets.VPS_USER }}/trabajo-final/trabajoengrupo-main"
     
-    - name: 🔐 Login to GHCR on VPS
-      uses: appleboy/ssh-action@v1
-      with:
-        host: ${{ secrets.VPS_HOST }}
-        username: ${{ secrets.VPS_USER }}
-        password: ${{ secrets.VPS_PASSWORD }}
-        port: ${{ secrets.VPS_SSH_PORT }}
-        script: |
-          echo "${{ secrets.GHRC_PACK }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
-    
     - name: 🚀 Deploy to server
       uses: appleboy/ssh-action@v1
       with:
@@ -87,9 +77,17 @@ jobs:
         password: ${{ secrets.VPS_PASSWORD }}
         port: ${{ secrets.VPS_SSH_PORT }}
         script: |
+          echo "Desplegando servicios"
           cd ~/trabajo-final/trabajoengrupo-main
+          echo "Descargando la imagen desde GHCR"
+          echo "${{ secrets.GHRC_PACK }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
           docker pull ghcr.io/mayte256/trabajo-final:3.0.0
           docker tag ghcr.io/mayte256/trabajo-final:3.0.0 mayte:latest
-          docker stack rm mayte
+          echo "Deteniendo los servicios (stack)"
+          docker stack rm mayte || true
+          echo "Esperar 10 segundos..."
           sleep 10
-          docker stack deploy -c stack.yml mayte
+          echo "Desplegando el stack"
+          docker stack deploy --with-registry-auth -c stack.yml mayte
+          echo "📋 Verificando contenedores:"
+          docker ps

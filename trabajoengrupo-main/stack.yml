@@ -2,7 +2,7 @@ version: "3.0.0"
 
 services:
   mayte:
-    image: ghcr.io/mayte256/trabajo-final:latest
+    image: ghcr.io/mayte256/trabajo-final:3.0.0
     build: .
     deploy:
       replicas: 1
